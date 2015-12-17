@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "NBKlarnaWebViewDelegate.h"
 
-@interface NBKlarnaWebView : UIWebView
+@interface NBKlarnaWebView : UIWebView<UIWebViewDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, weak) NSObject<NBKlarnaWebViewDelegate> *klarnaDelegate;
 
