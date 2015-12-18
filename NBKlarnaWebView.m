@@ -60,4 +60,9 @@
     [self performSelector:@selector(checkKlarnaWebViewHeight) withObject:nil afterDelay:2];
 }
 
+// required for taps to be recognized for UIWebView
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer*)otherGestureRecognizer {
+    return YES;
+}
+
 @end
