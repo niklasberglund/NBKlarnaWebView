@@ -18,10 +18,14 @@
     self.previousContentHeight = 0.0;
     self.delegate = self;
     
-    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedWebView)];
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedWebView:)];
     tapGestureRecognizer.numberOfTapsRequired = 1;
     tapGestureRecognizer.delegate = self;
     [self addGestureRecognizer:tapGestureRecognizer];
+    
+    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(tappedWebView:)];
+    panGestureRecognizer.delegate = self;
+    [self addGestureRecognizer:panGestureRecognizer];
 }
 
 - (void)didMoveToSuperview
@@ -44,11 +48,13 @@
     }
 }
 
-- (void)tappedWebView
+- (void)touchedWebView:(UIGestureRecognizer *)recognizer
 {
-    [self performSelector:@selector(checkKlarnaWebViewHeight) withObject:nil afterDelay:0.2];
-    [self performSelector:@selector(checkKlarnaWebViewHeight) withObject:nil afterDelay:0.6];
-    [self performSelector:@selector(checkKlarnaWebViewHeight) withObject:nil afterDelay:1];
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        [self performSelector:@selector(checkKlarnaWebViewHeight) withObject:nil afterDelay:0.2];
+        [self performSelector:@selector(checkKlarnaWebViewHeight) withObject:nil afterDelay:0.6];
+        [self performSelector:@selector(checkKlarnaWebViewHeight) withObject:nil afterDelay:1];
+    }
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
