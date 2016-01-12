@@ -9,7 +9,9 @@
 
 @implementation NBKlarnaWebView
 {
-    
+    // optimization - separated by delimiter in confirmationURI's setter
+    NSString *confirmationURIFirstPart;
+    NSString *confirmationURILastPart;
 }
 
 - (void)initialize
@@ -66,9 +68,35 @@
     [self performSelector:@selector(checkKlarnaWebViewHeight) withObject:nil afterDelay:2];
 }
 
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    NSLog(@"%@", request);
+    NSLog(@"%@", request.URL.absoluteString);
+    
+    // check if loading confirmation URI
+    if (self.confirmationURI) {
+        if ([request.URL.absoluteString rangeOfString:@"asd"].location == NSNotFound  && [request.URL.absoluteString rangeOfString:self->confirmationURILastPart].location != NSNotFound) {
+            NSLog(@"match confirmation URI");
+        }
+    }
+    
+    return YES;
+}
+
 // required for taps to be recognized for UIWebView
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer*)otherGestureRecognizer {
     return YES;
+}
+
+// using a custom setter to set confirmationURIFirstPart and confirmationURILastPart when the confirmationURI property is changed
+- (void)setConfirmationURI:(NSString *)confirmationURI
+{
+    _confirmationURI = confirmationURI;
+    
+    NSArray *components = [confirmationURI componentsSeparatedByString:@"{checkout.order.uri}"];
+    
+    self->confirmationURIFirstPart = components[0];
+    self->confirmationURILastPart = components[1];
 }
 
 @end

@@ -12,6 +12,8 @@
 
 @property (nonatomic, weak) NSObject<NBKlarnaWebViewDelegate> *klarnaDelegate;
 
+@property (nonatomic, strong) NSString *confirmationURI;
+
 @property (nonatomic, assign) CGFloat contentHeight;
 @property (nonatomic, assign) CGFloat previousContentHeight;
 
